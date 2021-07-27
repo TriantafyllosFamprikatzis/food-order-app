@@ -1,0 +1,9 @@
+.meals {
+  max-width: 85rem;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.meals ul {
+  padding: 0;
+}
