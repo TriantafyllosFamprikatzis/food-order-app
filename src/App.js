@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import Header from './components/Layout/Header/Header';
+import Header from './components/Layout/Header';
 import MealsSummary from './components/Meals/MealsSummary';
 import Meals from './components/Meals/Meals';
 
