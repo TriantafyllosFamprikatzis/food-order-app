@@ -1,19 +1,25 @@
-import React, { Fragment } from "react";
+import React, { useContext } from "react";
+import CartContext from "../../store/cart-context";
 
 import CartIcon from "../Cart/CartIcon";
 import classes from "./HeaderCartButton.module.css";
 
 const HeaderCartButton = (props) => {
+  const cartCtx = useContext(CartContext);
+
+  //Outpouts the sum amount of items in the array
+  const numberOfCartItems = cartCtx.items.reduce((currentNumber, item) => {
+    return currentNumber + item.amount;
+  }, 0);
+
   return (
-    <Fragment>
-      <button className={classes.button} onClick={props.showCartBtn}>
-        <span className={classes.icon}>
-          <CartIcon />
-        </span>
-        <span>Your Cart</span>
-        <span className={classes.badge}>3</span>
-      </button>
-    </Fragment>
+    <button className={classes.button} onClick={props.showCartBtn}>
+      <span className={classes.icon}>
+        <CartIcon />
+      </span>
+      <span>Your Cart</span>
+      <span className={classes.badge}>{numberOfCartItems}</span>
+    </button>
   );
 };
 
