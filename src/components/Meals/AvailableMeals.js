@@ -1,37 +1,65 @@
+import React, { useState, useCallback, useEffect } from 'react';
+
 import Card from "../UI/Card/Card";
 import MealItem from "./MealItem/MealItem.js";
 
 import classes from "./AvailableMeals.module.css";
 
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
-
 const AvailableMeals = () => {
-  const mealList = DUMMY_MEALS.map((meal) => (
+  const [meals, setMeals] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+  const [error, setError] = useState();
+
+  const fetchMeals = useCallback(async () => {
+    try {
+      const response = await fetch("https://react-food-order-ba806-default-rtdb.europe-west1.firebasedatabase.app/meals.json");
+
+      if (!response.ok) {
+        throw new Error('Something went wrong');
+      }
+
+      const data = await response.json();
+
+      let loadedMeals = [];
+
+      for (const key in data) {
+        loadedMeals.push({
+          id: key,
+          name: data[key].name,
+          description: data[key].description,
+          price: data[key].price,
+        });
+      }
+
+      setMeals(loadedMeals);
+      setIsloading(false);    
+    } catch (error){
+      setIsloading(false); 
+      setError(error.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMeals();
+  }, [fetchMeals]);
+
+  if (isLoading) {
+    return ( 
+      <section className={classes['meals-loading']}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={classes['meals-error']}>
+        <p>Failed to fetch</p>
+      </section>
+    );
+  }
+
+  const mealList = meals.map((meal) => (
     <MealItem
       id={meal.id}
       key={meal.id}
