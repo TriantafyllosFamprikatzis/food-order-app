@@ -1,13 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
 import CartItem from "./CartItem";
+import Checkout from "./Checkout";
 
 import classes from "./Cart.module.css";
 import CartContext from "../../store/cart-context";
 
 const Cart = (props) => {
+  const [showCheckout, setShowCheckout] = useState(false);
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `€${cartCtx.totalAmount.toFixed(2)}`;
@@ -20,8 +22,16 @@ const Cart = (props) => {
   const cartItemAddhandler = (item) => {
     cartCtx.addItem({
       ...item,
-      amount: 1
+      amount: 1,
     });
+  };
+
+  const orderHandler = () => {
+    setShowCheckout(true);
+  };
+
+  const cancelCheckout = () => {
+    setShowCheckout(false);
   };
 
   const cartItems = (
@@ -34,9 +44,22 @@ const Cart = (props) => {
           price={item.price}
           onRemove={cartItemRemoveHandler.bind(null, item.id)}
           onAdd={cartItemAddhandler.bind(null, item)}
-          />
+        />
       ))}
     </ul>
+  );
+
+  const modalActions = (
+    <div className={classes.actions}>
+      <Button className={classes["button--alt"]} onClick={props.onClose}>
+        Close
+      </Button>
+      {hasItems && (
+        <Button className={classes.button} onClick={orderHandler}>
+          Order
+        </Button>
+      )}
+    </div>
   );
 
   return (
@@ -49,12 +72,8 @@ const Cart = (props) => {
             <span>Total Amount</span>
             <span>{totalAmount}</span>
           </div>
-          <div className={classes.actions}>
-            <Button className={classes["button--alt"]} onClick={props.onClose}>
-              Close
-            </Button>
-            {hasItems && <Button className={classes.button}>Order</Button>}
-          </div>
+          {showCheckout && <Checkout onCancel={cancelCheckout}/>}
+          {!showCheckout && modalActions}
         </div>
       </div>
     </Modal>
