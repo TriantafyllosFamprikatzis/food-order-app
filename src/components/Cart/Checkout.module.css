@@ -66,3 +66,12 @@
 .invalid p {
   color: #ca3e51;
 }
+
+.submit:disabled,
+.submit:disabled:hover,
+.submit:disabled:active {
+  background-color: #ccc;
+  border-color: #ccc;
+  color: #292929;
+  cursor: not-allowed;
+}
