@@ -49,10 +49,6 @@ const Checkout = (props) => {
     formIsValid = true;
   }
 
-  if (nameIsValid) {
-    formIsValid = true;
-  }
-
   const confirmHandler = (event) => {
     event.preventDefault();
 
@@ -147,7 +143,7 @@ const Checkout = (props) => {
       </div>
       <div className={classes.actions}>
         <Button onClick={props.onCancel}>Cancel</Button>
-        <Button type="submit" className={classes.submit}>
+        <Button disabled={!formIsValid} type="submit" className={classes.submit}>
           Confirm
         </Button>
       </div>
