@@ -64,6 +64,13 @@ const Checkout = (props) => {
     resetPostal();
     resetStreet();
     resetCity();
+
+    props.onConfirm({
+      name: nameValue,
+      street: streetValue,
+      postal: postalValue,
+      city: cityValue,
+    });
   };
 
   const nameInputClasses = nameHasError
