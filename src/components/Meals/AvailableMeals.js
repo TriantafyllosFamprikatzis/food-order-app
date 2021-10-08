@@ -12,7 +12,7 @@ const AvailableMeals = () => {
 
   const fetchMeals = useCallback(async () => {
     try {
-      const response = await fetch("https://react-food-order-ba806-default-rtdb.europe-west1.firebasedatabase.app/meals.json");
+      const response = await fetch("LINK");
 
       if (!response.ok) {
         throw new Error('Something went wrong');
